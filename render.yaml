@@ -1,0 +1,39 @@
+services:
+  # ─── AI Engine (FastAPI + uvicorn) ──────────────────────────────────────────
+  - type: web
+    name: bloom-ai-engine
+    runtime: python
+    rootDir: ai-engine
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    envVars:
+      - key: MOCK_MODE
+        value: "true"
+      - key: PRIMARY_MODEL
+        value: llama3:8b
+      - key: FALLBACK_MODEL
+        value: mistral:7b
+
+  # ─── Backend (Node/Express) ──────────────────────────────────────────────────
+  - type: web
+    name: bloom-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: AI_ENGINE_URL
+        fromService:
+          name: bloom-ai-engine
+          type: web
+          property: host
+      - key: SUPABASE_URL
+        sync: false   # set manually in Render dashboard
+      - key: SUPABASE_ANON_KEY
+        sync: false   # set manually in Render dashboard
+      - key: FRONTEND_URL
+        sync: false   # set to your Vercel URL after deploying frontend
