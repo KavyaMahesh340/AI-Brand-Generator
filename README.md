@@ -1,6 +1,6 @@
 # AI Campaign Strategy Generator
 
-> **Confidential — Internal Distribution Only | BloomBig Studios Internship Programme**  
+> 
 > *Brands Built to Bloom*
 
 ---
