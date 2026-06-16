@@ -1,4 +1,4 @@
-# BloomBig Studio — AI Campaign Strategy Generator
+# AI Campaign Strategy Generator
 
 > **Confidential — Internal Distribution Only | BloomBig Studios Internship Programme**  
 > *Brands Built to Bloom*
@@ -67,4 +67,3 @@ Set `USE_MOCK_AI=false` in `backend/.env` and `MOCK_MODE=false` in `ai-engine/.e
 
 ---
 
-*BloomBig Studios Internship Programme — Confidential*
