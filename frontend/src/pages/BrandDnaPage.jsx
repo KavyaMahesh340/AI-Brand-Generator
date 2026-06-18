@@ -87,7 +87,7 @@ export default function BrandDnaPage() {
               <h2 style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', marginBottom: 4 }}>{selectedClient.brand_name}</h2>
               <p style={{ color: '#64748b', fontSize: 13 }}>{selectedClient.industry} · {selectedClient.geography}</p>
             </div>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0, }}>
               <Button variant="outline" size="sm" onClick={refresh} disabled={loading}>
                 <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
                 {loading ? 'Refreshing…' : t('brandDna.reExtract')}

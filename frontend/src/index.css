@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -117,20 +116,22 @@
 }
 
 /* â”€â”€â”€ Base Reset â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  scroll-behavior: smooth;
-  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-}
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
 
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: var(--bg-base);
-  color: var(--text-primary);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  body {
+    font-family: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 /* â”€â”€â”€ Scrollbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -140,29 +141,29 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
 /* â”€â”€â”€ Global Alignment Fixes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-/* Icons inside flex rows never push text out */
-svg { flex-shrink: 0; }
+@layer base {
+  /* Icons inside flex rows never push text out */
+  svg { flex-shrink: 0; }
 
-/* All inline-flex elements stay vertically centred */
-.inline-flex, [class*="badge"], [class*="status-pill"] {
-  align-items: center;
-  vertical-align: middle;
-}
+  /* All inline-flex elements stay vertically centred */
+  .inline-flex, [class*="badge"], [class*="status-pill"] {
+    align-items: center;
+    vertical-align: middle;
+  }
 
-/* Stat card number overflow guard removed - caused font clipping */
-
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: var(--text-primary);
-  line-height: 1.25;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    line-height: 1.25;
+  }
 }
 
 /* â”€â”€â”€ Page Layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .page-wrapper {
-  padding: 32px 24px;
+  width: 100%;
+  padding: 0;
   max-width: 100%;
 }
 
@@ -180,9 +181,11 @@ h1, h2, h3, h4, h5, h6 {
 
 
 .page-title {
-  font-size: 26px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
   margin-bottom: 4px;
 }
 
@@ -190,6 +193,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 14px;
   color: var(--text-secondary);
   font-weight: 400;
+  line-height: 1.5;
 }
 
 /* â”€â”€â”€ Section Labels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -364,7 +368,8 @@ h1, h2, h3, h4, h5, h6 {
 /* â”€â”€â”€ Form Inputs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .input-field {
   width: 100%;
-  padding: 10px 14px;
+  height: 40px;
+  padding: 0 14px;
   background: #fff;
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
@@ -385,6 +390,7 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
   font-size: 13px;
   font-weight: 600;
+  line-height: 1.4;
   color: var(--text-secondary);
   margin-bottom: 6px;
 }
@@ -394,12 +400,14 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 3px 10px;
+  height: 24px;
+  padding: 0 10px;
   border-radius: var(--radius-full);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.03em;
   border: 1px solid transparent;
+  line-height: 1;
 }
 
 .badge-teal   { background: var(--teal-50);   color: var(--teal-700);   border-color: var(--teal-200); }
@@ -502,6 +510,12 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 260px;
   min-height: 100vh;
   background: var(--bg-base);
+  padding: 0;
+}
+
+.content-shell {
+  width: 100%;
+  padding: 32px clamp(32px, 3.5vw, 56px) 40px;
 }
 
 /* â”€â”€â”€ Score Ring â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -711,7 +725,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* â”€â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 1024px) {
-  .page-wrapper { padding: 24px 24px; }
+  .content-shell { padding: 28px clamp(24px, 3vw, 40px) 36px; }
 }
 
 @media (max-width: 768px) {
@@ -721,8 +735,14 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 200;
   }
   .sidebar.open { transform: translateX(0); }
-  .main-content { margin-left: 0; }
-  .page-wrapper { padding: 20px 16px; }
+  .main-content {
+    margin-left: 0;
+    padding: 0;
+  }
+  .content-shell {
+    width: 100%;
+    padding: 24px 16px 32px;
+  }
   .page-header { flex-direction: column; align-items: flex-start; }
   .mobile-header {
     display: flex;
@@ -746,6 +766,7 @@ h1, h2, h3, h4, h5, h6 {
   .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .data-table { font-size: 12px; }
   .data-table td, .data-table th { padding: 10px 12px; }
+  .content-shell { padding: 24px 14px 28px; }
 }
 
 /* â”€â”€â”€ Sidebar overlay (mobile) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */

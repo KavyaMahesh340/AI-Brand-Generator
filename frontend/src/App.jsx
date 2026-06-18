@@ -59,7 +59,7 @@ function ProtectedLayout({ children }) {
             <Menu size={18} color="#475569" />
           </button>
           <div style={{
-            fontFamily: 'Space Grotesk, sans-serif',
+            fontFamily: 'Inter Variable, Inter, sans-serif',
             fontWeight: 700,
             fontSize: 15,
             color: '#0f172a',
@@ -69,7 +69,9 @@ function ProtectedLayout({ children }) {
           <div style={{ width: 34 }} />
         </div>
 
-        {children}
+        <div className="content-shell">
+          {children}
+        </div>
       </main>
     </div>
   )

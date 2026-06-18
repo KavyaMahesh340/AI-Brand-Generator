@@ -1,174 +1,162 @@
-import { Settings, Database, Cpu, Info, Sun } from 'lucide-react'
-import { useLanguageStore } from '../store'
+import { Check, Cpu, Database, Info, Settings, Sun } from 'lucide-react'
 import { useTranslation } from '../lib/useTranslation'
 import toast from 'react-hot-toast'
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
+import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
-import { Label } from '../components/ui/label'
+import { Select } from '../components/ui/select'
 import { Separator } from '../components/ui/separator'
-import { Badge } from '../components/ui/badge'
+import { SettingsActions, SettingsCard, SettingsField } from '../components/settings/SettingsPatterns'
 
 export default function SettingsPage() {
-  const { language } = useLanguageStore()
   const { t } = useTranslation()
 
   return (
     <div className="page-wrapper">
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 28 }}>
-        <div style={{ width: 42, height: 42, borderRadius: 11, background: '#f1f5f9', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Settings size={20} color="#64748b" />
-        </div>
-        <div>
-          <h1 className="page-title" style={{ fontSize: 22 }}>{t('settings.title')}</h1>
-          <p className="page-subtitle">{t('settings.subtitle')}</p>
-        </div>
-      </div>
-
-      {/* Appearance */}
-      <Card style={{ marginBottom: 20 }}>
-        <CardHeader>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Sun size={15} color="#d97706" />
-            <CardTitle>{t('settings.appearance')}</CardTitle>
+      <div className="flex w-full max-w-3xl flex-col gap-6 sm:gap-8">
+        <header className="flex items-start gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white shadow-sm">
+            <Settings size={20} className="text-gray-500" />
           </div>
-        </CardHeader>
-        <CardContent style={{ paddingTop: 0 }}>
-          <div style={{ fontSize: 13, fontWeight: 500, color: '#64748b', marginBottom: 14 }}>
-            {t('settings.interfaceTheme')}
+          <div className="min-w-0 space-y-1">
+            <h1 className="text-2xl font-semibold tracking-tight text-gray-900">{t('settings.title')}</h1>
+            <p className="text-sm text-gray-500">{t('settings.subtitle')}</p>
           </div>
+        </header>
 
-          {/* Light mode — active only */}
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 14,
-            padding: '16px', borderRadius: 12,
-            border: '2px solid #0d9488',
-            background: '#f0fdfa',
-          }}>
-            <div style={{ width: 44, height: 34, borderRadius: 7, background: '#ffffff', border: '1px solid #e2e8f0', flexShrink: 0, display: 'flex', flexDirection: 'column', padding: '5px 6px', gap: 3 }}>
-              <div style={{ height: 4, width: '55%', background: '#0d9488', borderRadius: 2 }} />
-              <div style={{ height: 3, width: '90%', background: '#e2e8f0', borderRadius: 2 }} />
-              <div style={{ height: 3, width: '70%', background: '#e2e8f0', borderRadius: 2 }} />
-            </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', display: 'flex', alignItems: 'center', gap: 6 }}>
-                <Sun size={14} color="#d97706" />
-                {t('settings.lightMode')}
-                <Badge variant="default" style={{ marginLeft: 6, fontSize: 10 }}>Active</Badge>
+        <SettingsCard
+          icon={<Sun size={16} className="text-amber-600" />}
+          title={t('settings.appearance')}
+          description={t('settings.interfaceTheme')}
+        >
+          <div className="space-y-4">
+            <div className="rounded-xl border border-teal-200 bg-teal-50 p-4">
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-14 shrink-0 flex-col gap-1.5 rounded-lg border border-gray-200 bg-white p-2">
+                  <div className="h-1.5 w-3/5 rounded-full bg-teal-600" />
+                  <div className="h-1 w-full rounded-full bg-gray-200" />
+                  <div className="h-1 w-4/5 rounded-full bg-gray-200" />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2 text-sm font-semibold text-gray-900">
+                    <Sun size={14} className="text-amber-600" />
+                    <span>{t('settings.lightMode')}</span>
+                    <Badge variant="default" size="sm">
+                      Active
+                    </Badge>
+                  </div>
+                  <p className="mt-1 text-xs leading-5 text-gray-500">{t('settings.lightModeDesc')}</p>
+                </div>
+
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal-600 text-white">
+                  <Check size={14} />
+                </div>
               </div>
-              <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>{t('settings.lightModeDesc')}</div>
             </div>
-            <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#0d9488', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+
+            <p className="text-xs leading-5 text-gray-500">{t('settings.themeNote')}</p>
+          </div>
+        </SettingsCard>
+
+        <SettingsCard
+          icon={<Database size={16} className="text-blue-600" />}
+          title={t('settings.supabase')}
+          description="Connect your project data and API credentials."
+        >
+          <div className="space-y-4">
+            <SettingsField htmlFor="supabase-url" label={t('settings.projectUrl')}>
+              <Input
+                id="supabase-url"
+                placeholder="https://yourproject.supabase.co"
+                defaultValue="https://placeholder.supabase.co"
+              />
+            </SettingsField>
+
+            <SettingsField htmlFor="supabase-key" label={t('settings.anonKey')}>
+              <Input
+                id="supabase-key"
+                placeholder="eyJ..."
+                type="password"
+                defaultValue="placeholder-key"
+              />
+            </SettingsField>
+
+            <SettingsActions>
+              <Button
+                className="w-full sm:w-auto"
+                variant="secondary"
+                onClick={() => toast.success('Supabase config saved!')}
+              >
+                {t('settings.saveConnection')}
+              </Button>
+            </SettingsActions>
+          </div>
+        </SettingsCard>
+
+        <SettingsCard
+          icon={<Cpu size={16} className="text-teal-600" />}
+          title={t('settings.aiEngine')}
+          description="Set your local model endpoint and fallback behavior."
+        >
+          <div className="space-y-4">
+            <SettingsField htmlFor="engine-url" label={t('settings.engineUrl')}>
+              <Input id="engine-url" defaultValue="http://localhost:8001" />
+            </SettingsField>
+
+            <SettingsField htmlFor="primary-model" label={t('settings.primaryModel')}>
+              <Select id="primary-model" defaultValue="llama3:8b">
+                <option value="llama3:8b">Llama 3 8B (Structured Output)</option>
+                <option value="mistral:7b">Mistral 7B (Creative)</option>
+              </Select>
+            </SettingsField>
+
+            <SettingsField htmlFor="fallback-model" label={t('settings.fallbackModel')}>
+              <Select id="fallback-model" defaultValue="mistral:7b">
+                <option value="mistral:7b">Mistral 7B</option>
+                <option value="llama3:8b">Llama 3 8B</option>
+              </Select>
+            </SettingsField>
+
+            <SettingsActions className="sm:justify-end">
+              <Button
+                className="w-full sm:w-auto"
+                variant="secondary"
+                onClick={() => toast.success('AI Engine config saved!')}
+              >
+                {t('settings.save')}
+              </Button>
+              <Button
+                className="w-full sm:w-auto"
+                variant="outline"
+                onClick={() => toast.success('Mock Mode - AI engine is simulated')}
+              >
+                {t('settings.testConnection')}
+              </Button>
+            </SettingsActions>
+          </div>
+        </SettingsCard>
+
+        <SettingsCard
+          icon={<Info size={16} className="text-amber-600" />}
+          title={t('settings.about')}
+          description={t('settings.version')}
+        >
+          <div className="space-y-4">
+            <div className="space-y-1.5">
+              <div className="text-sm font-semibold text-gray-900">BloomBig Studio AI</div>
+              <p className="text-sm text-gray-600">{t('login.subtitle')}</p>
             </div>
-          </div>
 
-          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 12, lineHeight: 1.6 }}>
-            {t('settings.themeNote')}
-          </p>
-        </CardContent>
-      </Card>
+            <Separator />
 
-      {/* Supabase */}
-      <Card style={{ marginBottom: 20 }}>
-        <CardHeader>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Database size={15} color="#2563eb" />
-            <CardTitle>{t('settings.supabase')}</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent style={{ paddingTop: 0 }}>
-          <div style={{ marginBottom: 14 }}>
-            <Label htmlFor="supabase-url" style={{ marginBottom: 6 }}>{t('settings.projectUrl')}</Label>
-            <Input
-              id="supabase-url"
-              placeholder="https://yourproject.supabase.co"
-              defaultValue="https://placeholder.supabase.co"
-            />
-          </div>
-          <div style={{ marginBottom: 16 }}>
-            <Label htmlFor="supabase-key" style={{ marginBottom: 6 }}>{t('settings.anonKey')}</Label>
-            <Input
-              id="supabase-key"
-              placeholder="eyJ…"
-              type="password"
-              defaultValue="placeholder-key"
-            />
-          </div>
-          <Button
-            variant="secondary"
-            onClick={() => toast.success(language === 'ta' ? 'சுபாபேஸ் அமைப்பு சேமிக்கப்பட்டது!' : 'Supabase config saved!')}
-          >
-            {t('settings.saveConnection')}
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* AI Engine */}
-      <Card style={{ marginBottom: 20 }}>
-        <CardHeader>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Cpu size={15} color="#0d9488" />
-            <CardTitle>{t('settings.aiEngine')}</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent style={{ paddingTop: 0 }}>
-          <div style={{ marginBottom: 14 }}>
-            <Label htmlFor="engine-url" style={{ marginBottom: 6 }}>{t('settings.engineUrl')}</Label>
-            <Input id="engine-url" defaultValue="http://localhost:8001" />
-          </div>
-          <div style={{ marginBottom: 14 }}>
-            <Label htmlFor="primary-model" style={{ marginBottom: 6 }}>{t('settings.primaryModel')}</Label>
-            <select id="primary-model" className="input-field" style={{ cursor: 'pointer' }}>
-              <option value="llama3:8b">Llama 3 8B (Structured Output)</option>
-              <option value="mistral:7b">Mistral 7B (Creative)</option>
-            </select>
-          </div>
-          <div style={{ marginBottom: 20 }}>
-            <Label htmlFor="fallback-model" style={{ marginBottom: 6 }}>{t('settings.fallbackModel')}</Label>
-            <select id="fallback-model" className="input-field" style={{ cursor: 'pointer' }}>
-              <option value="mistral:7b">Mistral 7B</option>
-              <option value="llama3:8b">Llama 3 8B</option>
-            </select>
-          </div>
-          <div style={{ display: 'flex', gap: 10 }}>
-            <Button
-              variant="secondary"
-              onClick={() => toast.success(language === 'ta' ? 'AI இயந்திர அமைப்பு சேமிக்கப்பட்டது!' : 'AI Engine config saved!')}
-            >
-              {t('settings.save')}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => toast.success('Mock Mode — AI engine is simulated')}
-            >
-              {t('settings.testConnection')}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* About */}
-      <Card>
-        <CardHeader>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Info size={15} color="#d97706" />
-            <CardTitle>{t('settings.about')}</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent style={{ paddingTop: 0 }}>
-          <div style={{ fontSize: 13, color: '#64748b', lineHeight: 1.8 }}>
-            <div><strong style={{ color: '#0f172a' }}>BloomBig Studio AI</strong> — {t('settings.version')}</div>
-            <div>{t('login.subtitle')}</div>
-            <Separator style={{ margin: '12px 0' }} />
-            <div style={{ fontSize: 12, color: '#94a3b8' }}>
-              Confidential — BloomBig Studios Internship Programme<br />
-              Brands Built to Bloom · Internal Distribution Only
+            <div className="space-y-1.5 text-xs leading-5 text-gray-500">
+              <p>Confidential - BloomBig Studios Internship Programme</p>
+              <p>Brands Built to Bloom - Internal Distribution Only</p>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </SettingsCard>
+      </div>
     </div>
   )
 }

@@ -89,7 +89,7 @@ export const translations = {
       title: 'New Campaign Strategy',
       subtitle: 'Fill in the brief — AI handles the strategy',
       campaignName: 'Campaign Name',
-      campaignNamePlaceholder: 'e.g. Summer Brand Awareness Push',
+      campaignNamePlaceholder: '    e.g. Summer Brand Awareness Push',
       brand: 'Brand / Client',
       brandPlaceholder: 'e.g. NatureBloom Co.',
       industry: 'Industry',

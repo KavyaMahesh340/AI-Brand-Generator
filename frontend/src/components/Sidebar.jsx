@@ -90,8 +90,8 @@ export default function Sidebar({ mobileOpen, onMobileClose }) {
           {!collapsed && (
             <div>
               <div
-                style={{
-                  fontFamily: 'Space Grotesk, sans-serif',
+              style={{
+                  fontFamily: 'Inter Variable, Inter, sans-serif',
                   fontWeight: 700,
                   fontSize: 14,
                   color: '#0f172a',
