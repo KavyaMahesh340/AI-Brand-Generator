@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
   Sparkles, RefreshCw, ChevronDown, ChevronUp, Copy,
-  BarChart3, AlertTriangle,
+  BarChart3, AlertTriangle, Lightbulb, Sunrise, MessageSquare, CheckCircle2, ShieldAlert,
   Brain, Users, Target, Globe, Zap, Download, Check,
-  ArrowLeftRight, Shield
+  ArrowLeftRight, Shield, Briefcase, Camera, Music, MessageCircle
 } from 'lucide-react'
 import { useLanguageStore } from '../store'
 import { useTranslation } from '../lib/useTranslation'
@@ -16,17 +16,17 @@ import {
 } from '../lib/mockData'
 
 const PLATFORM_COLORS = {
-  LinkedIn: '#0A66C2',
-  Instagram: '#E1306C',
-  TikTok: '#69C9D0',
-  WhatsApp: '#25D366',
+  linkedin: '#0A66C2',
+  instagram: '#E1306C',
+  tiktok: '#69C9D0',
+  whatsapp: '#25D366',
 }
 
-const PLATFORM_ICONS = { LinkedIn: '💼', Instagram: '📸', TikTok: '🎵', WhatsApp: '💬' }
+const PLATFORM_ICONS = { linkedin: Briefcase, instagram: Camera, tiktok: Music, whatsapp: MessageCircle }
 
 function PipelineLoader({ steps, currentStep, done, t }) {
   return (
-    <div className="glass-card-static" style={{ padding: 32, maxWidth: 520, margin: '40px auto', textAlign: 'center' }}>
+    <div className="glass-card-static" style={{ padding: 32, margin: '40px auto', textAlign: 'center' }}>
       <div style={{ marginBottom: 24 }}>
         <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'linear-gradient(135deg,rgba(13,155,118,0.2),rgba(167,139,250,0.1))', border: '2px solid rgba(13,155,118,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
           <Sparkles size={24} color="#40C29A" style={{ animation: 'pulse-glow 1.5s infinite' }} />
@@ -147,7 +147,7 @@ export default function CampaignDetailPage() {
 
   if (generating) {
     return (
-      <div style={{ padding: '32px 36px' }}>
+      <div style={{ padding: '32px 24px' }}>
         <PipelineLoader steps={PIPELINE_STEPS} currentStep={pipelineStep} done={false} t={t} />
       </div>
     )
@@ -167,7 +167,7 @@ export default function CampaignDetailPage() {
   ]
 
   return (
-    <div style={{ padding: '32px 36px', maxWidth: 1200 }}>
+    <div style={{ padding: '32px 24px' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
         <div>
@@ -205,7 +205,7 @@ export default function CampaignDetailPage() {
         <p style={{ color: 'var(--text-secondary)', fontSize: 13, marginBottom: 20, lineHeight: 1.6 }}>
           {language === 'ta' ? 'இந்த பிரச்சார உத்தி பார்வையாளர் சுயவிவரத்திற்கு மிகச் சிறந்த முறையில் பொருந்துகிறது. கலாச்சார ரீதியான ஈடுபாடு வலுவாக உள்ளது.' : healthScore.rationale}
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {Object.entries(healthScore.sub_scores).map(([key, val]) => {
             const pct = val.score
             const color = pct >= 85 ? '#10B981' : pct >= 70 ? '#3B82F6' : '#F59E0B'
@@ -233,7 +233,7 @@ export default function CampaignDetailPage() {
 
       {/* Audience Personas */}
       <SectionCard title={t('detail.personas')} icon={Users} badge={t('detail.personasCount')} t={t} language={language}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {personas.map(p => (
             <div key={p.id} style={{ padding: '20px', borderRadius: 14, background: `${p.color}08`, border: `1px solid ${p.color}25` }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
@@ -246,16 +246,21 @@ export default function CampaignDetailPage() {
                 </div>
               </div>
               {[
-                { label: `🌅 ${t('personas.morningState')}`, val: p.morning_state },
-                { label: `😰 ${t('personas.biggestFear')}`, val: p.fear },
-                { label: `💬 ${t('personas.theirLanguage')}`, val: p.language_phrases.join(', ') },
-                { label: `🎯 ${t('personas.jtbd')}`, val: p.jobs_to_be_done },
-              ].map(row => (
-                <div key={row.label} style={{ marginBottom: 10 }}>
-                  <div style={{ fontSize: 10, fontWeight: 600, color: p.color, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 3 }}>{row.label}</div>
-                  <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{row.val}</div>
+                { label: t('personas.morningState'), val: p.morning_state, icon: Sunrise },
+                { label: t('personas.biggestFear'), val: p.fear, icon: AlertTriangle },
+                { label: t('personas.theirLanguage'), val: p.language_phrases.join(', '), icon: MessageSquare },
+                { label: t('personas.jtbd'), val: p.jobs_to_be_done, icon: Target },
+              ].map(row => {
+                const RowIcon = row.icon
+                return (
+                <div key={row.label} style={{ marginBottom: 10, display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                  <RowIcon size={13} color={p.color} style={{ marginTop: 1, flexShrink: 0 }} />
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 600, color: p.color, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 3 }}>{row.label}</div>
+                    <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{row.val}</div>
+                  </div>
                 </div>
-              ))}
+              )})}
               <div style={{ marginTop: 12, padding: '8px', background: `${p.color}10`, borderRadius: 8, fontSize: 11, color: 'var(--text-secondary)', fontStyle: 'italic', lineHeight: 1.5 }}>
                 "{p.jobs_to_be_done}"
               </div>
@@ -279,7 +284,9 @@ export default function CampaignDetailPage() {
                 <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>{bs.gap}</div>
                 <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 10, lineHeight: 1.6 }}>{bs.insight}</div>
                 <div style={{ padding: '10px 14px', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: 8 }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: '#10B981', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>💡 {t('detail.opportunity')}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, fontWeight: 700, color: '#10B981', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+                    <Lightbulb size={12} style={{ flexShrink: 0 }} /> {t('detail.opportunity')}
+                  </div>
                   <div style={{ fontSize: 12, color: '#34D399', lineHeight: 1.5 }}>{bs.opportunity}</div>
                 </div>
               </div>
@@ -290,15 +297,15 @@ export default function CampaignDetailPage() {
 
       {/* Cultural Moment Mapper */}
       <SectionCard title={t('detail.cultural')} icon={Globe} badge={t('detail.geoAware')} t={t} language={language}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div>
             <div style={{ padding: '16px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: 12, marginBottom: 16 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: '#F59E0B', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>{t('detail.primaryMoment')}</div>
               <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 6 }}>{culturalMoments.primary_moment}</div>
               <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>{culturalMoments.timing_advice}</div>
             </div>
-            <div style={{ padding: '12px 14px', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: 10, fontSize: 13, color: '#34D399', lineHeight: 1.5 }}>
-              🌐 {culturalMoments.language_tip}
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '12px 14px', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: 10, fontSize: 13, color: '#34D399', lineHeight: 1.5 }}>
+              <Globe size={14} style={{ flexShrink: 0, marginTop: 2 }} /> {culturalMoments.language_tip}
             </div>
           </div>
           <div>
@@ -329,7 +336,7 @@ export default function CampaignDetailPage() {
 
       {/* Emotion-Outcome Chain */}
       <SectionCard title={t('detail.emotion')} icon={Zap} badge={t('detail.aiChained')} t={t} language={language}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             { step: '1', q: t('detail.targetEmotion'), a: emotionOutcome.target_emotion, color: '#12B485' },
             { step: '2', q: t('detail.bestFormat'), a: emotionOutcome.content_format, color: '#F59E0B' },
@@ -356,21 +363,23 @@ export default function CampaignDetailPage() {
         <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
           {Object.keys(platformTranslation).map(p => {
             const color = PLATFORM_COLORS[p]
+            const Icon = PLATFORM_ICONS[p]
             return (
               <button key={p} onClick={() => setActivePlatform(p)}
                 style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
                   padding: '8px 16px', borderRadius: 8, fontFamily: 'Inter', fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
                   border: `1px solid ${activePlatform === p ? color + '60' : 'var(--border-subtle)'}`,
                   background: activePlatform === p ? color + '15' : 'transparent',
                   color: activePlatform === p ? color : 'var(--text-secondary)',
                 }}>
-                {PLATFORM_ICONS[p]} {p}
+                <Icon size={14} /> {p}
               </button>
             )
           })}
         </div>
         {currentPlatform && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
@@ -429,18 +438,18 @@ export default function CampaignDetailPage() {
 
       {/* Risk Radar */}
       <SectionCard title={t('detail.riskRadar')} icon={Shield} badge={t('detail.dim3')} t={t} language={language}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {Object.entries(riskRadar).map(([key, risk]) => {
             const label = key === 'cultural_sensitivity' ? t('riskRadar.culturalSensitivity') :
                           key === 'trend_expiry' ? t('riskRadar.trendExpiry') :
                           t('riskRadar.creativeFatigue')
             const scoreColor = risk.score <= 3 ? '#10B981' : risk.score <= 6 ? '#F59E0B' : '#EF4444'
-            const icon = risk.score <= 3 ? '🟢' : risk.score <= 6 ? '🟡' : '🔴'
+            const RiskIcon = risk.score <= 3 ? CheckCircle2 : risk.score <= 6 ? AlertTriangle : ShieldAlert
             return (
               <div key={key} style={{ padding: 18, borderRadius: 12, border: `1px solid ${scoreColor}25`, background: `${scoreColor}06` }}>
-                <div style={{ display: 'flex', justify: 'space-between', alignItems: 'center', marginBottom: 12, gap: 8 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, gap: 8 }}>
                   <div style={{ fontSize: 13, fontWeight: 700 }}>{label}</div>
-                  <div style={{ fontSize: 22, marginLeft: 'auto' }}>{icon}</div>
+                  <RiskIcon size={22} color={scoreColor} />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
                   <div style={{ fontSize: 28, fontWeight: 800, fontFamily: 'Space Grotesk', color: scoreColor }}>{risk.score}</div>

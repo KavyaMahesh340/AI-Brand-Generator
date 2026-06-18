@@ -1,8 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAppStore, useLanguageStore } from '../store'
+import { useLanguageStore } from '../store'
 import { useTranslation } from '../lib/useTranslation'
-import { Plus, Search, Filter, BarChart3, Zap, Clock, CheckCircle2, FileText } from 'lucide-react'
+import { Plus, Search, BarChart3, Zap, Clock, CheckCircle2, FileText, ChevronRight } from 'lucide-react'
+import { Card } from '../components/ui/card'
+import { Badge } from '../components/ui/badge'
+import { Button } from '../components/ui/button'
+import { Input } from '../components/ui/input'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '../components/ui/table'
 
 const DEMO_CAMPAIGNS = [
   { id: '1', name: 'Pongal Harvest Launch', client: 'NatureBloom Co.', status: 'active', score: 84, goal: 'Brand Awareness', created_at: '2024-01-10', platform: 'Instagram Reels' },
@@ -11,6 +16,42 @@ const DEMO_CAMPAIGNS = [
   { id: '4', name: 'App Launch 2.0', client: 'FinEdge Startup', status: 'active', score: 78, goal: 'Product Launch', created_at: '2024-01-03', platform: 'LinkedIn + WhatsApp' },
   { id: '5', name: 'Sustainability Series', client: 'GreenPath NGO', status: 'draft', score: 65, goal: 'Community Building', created_at: '2024-01-01', platform: 'Instagram + TikTok' },
 ]
+
+const STATUS_CONFIG = {
+  active:    { variant: 'success', icon: Zap,          label: 'Active' },
+  draft:     { variant: 'warning', icon: Clock,         label: 'Draft' },
+  completed: { variant: 'info',    icon: CheckCircle2,  label: 'Completed' },
+}
+
+function ScoreBadge({ score }) {
+  const variant = score >= 80 ? 'success' : score >= 65 ? 'warning' : 'destructive'
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, whiteSpace: 'nowrap' }}>
+      <div style={{ position: 'relative', width: 32, height: 32, flexShrink: 0 }}>
+        <svg width="32" height="32" viewBox="0 0 32 32">
+          <circle cx="16" cy="16" r="12" fill="none" stroke="#f1f5f9" strokeWidth="3" />
+          <circle
+            cx="16" cy="16" r="12" fill="none"
+            stroke={score >= 80 ? '#16a34a' : score >= 65 ? '#d97706' : '#dc2626'}
+            strokeWidth="3"
+            strokeDasharray={`${(score / 100) * 75.4} 75.4`}
+            strokeLinecap="round"
+            style={{ transform: 'rotate(-90deg)', transformOrigin: 'center' }}
+          />
+        </svg>
+        <span style={{
+          position: 'absolute', top: '50%', left: '50%',
+          transform: 'translate(-50%,-50%)',
+          fontSize: 8, fontWeight: 700,
+          color: score >= 80 ? '#16a34a' : score >= 65 ? '#d97706' : '#dc2626',
+        }}>
+          {score}
+        </span>
+      </div>
+      <span style={{ fontSize: 12, fontWeight: 600, color: '#64748b' }}>{score}/100</span>
+    </div>
+  )
+}
 
 export default function CampaignsPage() {
   const navigate = useNavigate()
@@ -25,143 +66,122 @@ export default function CampaignsPage() {
     return matchSearch && matchFilter
   })
 
-  const statusIcon = { active: Zap, draft: Clock, completed: CheckCircle2 }
-  const statusColor = { active: '#10B981', draft: '#F59E0B', completed: '#3B82F6' }
+  const filters = ['all', 'active', 'draft', 'completed']
 
   return (
-    <div style={{ padding: '32px 36px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
+    <div className="page-wrapper">
+      {/* Header */}
+      <div className="page-header">
         <div>
-          <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 4 }}>{t('campaigns.title')}</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>
-            {language === 'ta' ? (
-              `${filtered.length} பிரச்சாரங்கள் கண்டறியப்பட்டன`
-            ) : (
-              `${filtered.length} campaign${filtered.length !== 1 ? 's' : ''} found`
-            )}
+          <h1 className="page-title">{t('campaigns.title')}</h1>
+          <p className="page-subtitle">
+            {filtered.length} campaign{filtered.length !== 1 ? 's' : ''} found
           </p>
         </div>
-        <button className="btn-primary" onClick={() => navigate('/campaigns/new')}>
-          <Plus size={16} /> {t('newCampaign.title')}
-        </button>
+        <Button id="new-campaign-top-btn" onClick={() => navigate('/campaigns/new')}>
+          <Plus size={15} /> {t('newCampaign.title')}
+        </Button>
       </div>
 
       {/* Filters */}
-      <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-        <div style={{ position: 'relative', flex: 1, maxWidth: 360 }}>
-          <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-          <input
-            className="input-field"
+      <div style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
+        <div style={{ position: 'relative', flex: '1 1 280px', maxWidth: 360 }}>
+          <Search size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', pointerEvents: 'none' }} />
+          <Input
+            id="campaign-search"
             placeholder={t('campaigns.search')}
             value={search}
             onChange={e => setSearch(e.target.value)}
-            style={{ paddingLeft: 42 }}
+            style={{ paddingLeft: 36 }}
           />
         </div>
-        {['all', 'active', 'draft', 'completed'].map(f => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            style={{
-              padding: '10px 18px',
-              borderRadius: 10,
-              border: `1px solid ${filter === f ? 'rgba(13,155,118,0.4)' : 'var(--border-subtle)'}`,
-              background: filter === f ? 'rgba(13,155,118,0.12)' : 'transparent',
-              color: filter === f ? 'var(--bloom-primary-light)' : 'var(--text-secondary)',
-              cursor: 'pointer',
-              fontFamily: 'Inter, sans-serif',
-              fontSize: 13,
-              fontWeight: filter === f ? 600 : 400,
-              transition: 'all 0.2s',
-            }}
-          >
-            {t(`campaigns.${f}`)}
-          </button>
-        ))}
+        <div style={{ display: 'flex', background: '#f1f5f9', borderRadius: 10, padding: 4, gap: 2 }}>
+          {filters.map(f => (
+            <button
+              key={f}
+              id={`filter-${f}`}
+              onClick={() => setFilter(f)}
+              style={{
+                padding: '7px 16px',
+                borderRadius: 8,
+                border: 'none',
+                background: filter === f ? '#ffffff' : 'transparent',
+                color: filter === f ? '#0f172a' : '#64748b',
+                cursor: 'pointer',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: 13,
+                fontWeight: filter === f ? 600 : 500,
+                transition: 'all 0.15s',
+                boxShadow: filter === f ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {t(`campaigns.${f}`)}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Campaign table */}
-      <div className="glass-card-static" style={{ overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-              {[
-                t('campaigns.name'),
-                t('campaigns.client'),
-                t('campaigns.goal'),
-                t('campaigns.platform'),
-                t('detail.campaignIq'),
-                t('campaigns.status'),
-                t('campaigns.created'),
-                ''
-              ].map((h, index) => (
-                <th key={index} style={{ padding: '14px 20px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((c, i) => {
-              const StatusIcon = statusIcon[c.status]
-              const sColor = statusColor[c.status]
-              const scoreColor = c.score >= 80 ? '#10B981' : c.score >= 65 ? '#F59E0B' : '#EF4444'
+      {/* Campaign Table */}
+      <Card style={{ overflow: 'hidden' }}>
+        <Table>
+          <TableHeader>
+            <TableRow style={{ background: '#f8fafc' }}>
+              <TableHead>{t('campaigns.name')}</TableHead>
+              <TableHead>{t('campaigns.client')}</TableHead>
+              <TableHead>{t('campaigns.goal')}</TableHead>
+              <TableHead>{t('campaigns.platform')}</TableHead>
+              <TableHead>{t('detail.campaignIq')}</TableHead>
+              <TableHead>{t('campaigns.status')}</TableHead>
+              <TableHead>{t('campaigns.created')}</TableHead>
+              <TableHead></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.map((c) => {
+              const statusCfg = STATUS_CONFIG[c.status] || STATUS_CONFIG.draft
+              const StatusIcon = statusCfg.icon
               return (
-                <tr
+                <TableRow
                   key={c.id}
-                  style={{
-                    borderBottom: i < filtered.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
-                    transition: 'background 0.15s',
-                    cursor: 'pointer',
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(13,155,118,0.04)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  style={{ cursor: 'pointer' }}
                   onClick={() => navigate(`/campaigns/${c.id}`)}
                 >
-                  <td style={{ padding: '16px 20px', fontWeight: 600, fontSize: 14 }}>{c.name}</td>
-                  <td style={{ padding: '16px 20px', fontSize: 13, color: 'var(--text-secondary)' }}>{c.client}</td>
-                  <td style={{ padding: '16px 20px', fontSize: 13, color: 'var(--text-secondary)' }}>{c.goal}</td>
-                  <td style={{ padding: '16px 20px', fontSize: 12, color: 'var(--text-muted)' }}>{c.platform}</td>
-                  <td style={{ padding: '16px 20px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <div style={{ position: 'relative', width: 36, height: 36 }}>
-                        <svg width="36" height="36" viewBox="0 0 36 36">
-                          <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="3" />
-                          <circle cx="18" cy="18" r="14" fill="none" stroke={scoreColor}
-                            strokeWidth="3"
-                            strokeDasharray={`${(c.score / 100) * 88} 88`}
-                            strokeLinecap="round"
-                            style={{ transform: 'rotate(-90deg)', transformOrigin: 'center' }} />
-                        </svg>
-                        <span style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', fontSize: 9, fontWeight: 700, color: scoreColor }}>
-                          {c.score}
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                  <td style={{ padding: '16px 20px' }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '3px 10px', borderRadius: 20, background: `${sColor}15`, border: `1px solid ${sColor}30`, fontSize: 11, fontWeight: 600, color: sColor }}>
+                  <TableCell style={{ fontWeight: 600, color: '#0f172a', fontSize: 14 }}>{c.name}</TableCell>
+                  <TableCell>{c.client}</TableCell>
+                  <TableCell>{c.goal}</TableCell>
+                  <TableCell style={{ color: '#94a3b8', fontSize: 12 }}>{c.platform}</TableCell>
+                  <TableCell><ScoreBadge score={c.score} /></TableCell>
+                  <TableCell>
+                    <Badge variant={statusCfg.variant} style={{ gap: 5 }}>
                       <StatusIcon size={10} />
                       {t(`campaigns.${c.status}`)}
-                    </span>
-                  </td>
-                  <td style={{ padding: '16px 20px', fontSize: 12, color: 'var(--text-muted)' }}>{c.created_at}</td>
-                  <td style={{ padding: '16px 20px' }}>
-                    <button
-                      className="btn-ghost"
-                      style={{ padding: '6px 12px', fontSize: 12 }}
+                    </Badge>
+                  </TableCell>
+                  <TableCell style={{ color: '#94a3b8', fontSize: 12 }}>{c.created_at}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={e => { e.stopPropagation(); navigate(`/campaigns/${c.id}`) }}
                     >
-                      <FileText size={12} /> {t('common.view')}
-                    </button>
-                  </td>
-                </tr>
+                      <FileText size={13} />
+                      {t('common.view')}
+                      <ChevronRight size={12} />
+                    </Button>
+                  </TableCell>
+                </TableRow>
               )
             })}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+        {filtered.length === 0 && (
+          <div style={{ padding: '48px 24px', textAlign: 'center', color: '#94a3b8' }}>
+            <FileText size={32} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
+            <div style={{ fontSize: 14, fontWeight: 500 }}>No campaigns found</div>
+          </div>
+        )}
+      </Card>
     </div>
   )
 }
-

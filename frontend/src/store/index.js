@@ -21,18 +21,17 @@ export const useAuthStore = create(
   )
 )
 
-// ─── Theme Store ───────────────────────────────────────────────────────────────
+// ─── Theme Store — Locked to Light ────────────────────────────────────────────
+// Dark mode has been removed. The application uses a professional light theme only.
 export const useThemeStore = create(
   persist(
     (set, get) => ({
-      theme: 'dark', // 'dark' | 'light'
-      toggleTheme: () => {
-        const next = get().theme === 'dark' ? 'light' : 'dark'
-        document.documentElement.setAttribute('data-theme', next)
-        set({ theme: next })
-      },
+      theme: 'light',
+      // No-op: kept for backward compatibility with any residual references
+      toggleTheme: () => {},
       applyTheme: () => {
-        document.documentElement.setAttribute('data-theme', get().theme)
+        document.documentElement.setAttribute('data-theme', 'light')
+        document.documentElement.classList.remove('dark')
       },
     }),
     { name: 'bloom-theme' }

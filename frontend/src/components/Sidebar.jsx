@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useAppStore, useAuthStore, useThemeStore, useLanguageStore } from '../store'
+import { useAppStore, useAuthStore, useLanguageStore } from '../store'
 import { useTranslation } from '../lib/useTranslation'
-import { LANGUAGES } from '../lib/i18n'
 import {
   LayoutDashboard,
   Zap,
@@ -16,9 +15,7 @@ import {
   Sparkles,
   Target,
   Shield,
-  Sun,
-  Moon,
-  Languages,
+  X,
 } from 'lucide-react'
 
 const NAV_KEYS = [
@@ -33,29 +30,31 @@ const NAV_KEYS = [
   { icon: FileText,        key: 'nav.export',      path: '/export' },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ mobileOpen, onMobileClose }) {
   const location = useLocation()
   const navigate = useNavigate()
   const { sidebarCollapsed, toggleSidebar } = useAppStore()
   const { user, logout } = useAuthStore()
-  const { theme, toggleTheme } = useThemeStore()
-  const { language, toggleLanguage } = useLanguageStore()
   const { t } = useTranslation()
-
-  const isLight = theme === 'light'
-  const isTamil = language === 'ta'
-  const currentLang = LANGUAGES.find(l => l.code === language)
 
   const handleLogout = () => {
     logout()
     navigate('/login')
+    if (onMobileClose) onMobileClose()
   }
+
+  const handleNav = (path) => {
+    navigate(path)
+    if (onMobileClose) onMobileClose()
+  }
+
+  const collapsed = sidebarCollapsed
 
   return (
     <aside
-      className="sidebar"
+      className={`sidebar ${mobileOpen ? 'open' : ''}`}
       style={{
-        width: sidebarCollapsed ? '72px' : '260px',
+        width: collapsed ? '68px' : '260px',
         transition: 'width 0.3s ease',
         overflowX: 'hidden',
         overflowY: 'auto',
@@ -64,51 +63,85 @@ export default function Sidebar() {
       {/* Logo */}
       <div
         style={{
-          padding: sidebarCollapsed ? '20px 16px' : '24px 20px',
-          borderBottom: '1px solid var(--border-subtle)',
+          padding: collapsed ? '18px 14px' : '20px 18px',
+          borderBottom: '1px solid #f1f5f9',
           display: 'flex',
           alignItems: 'center',
           gap: 12,
-          justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
+          justifyContent: collapsed ? 'center' : 'space-between',
         }}
       >
-        <div
-          style={{
-            width: 36,
-            height: 36,
-            borderRadius: 10,
-            background: 'linear-gradient(135deg, #0D9B76, #12B485)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            boxShadow: '0 4px 12px rgba(13,155,118,0.38)',
-          }}
-        >
-          <Sparkles size={18} color="white" />
-        </div>
-        {!sidebarCollapsed && (
-          <div>
-            <div
-              style={{
-                fontFamily: 'Space Grotesk, sans-serif',
-                fontWeight: 700,
-                fontSize: 15,
-                color: 'var(--text-primary)',
-                lineHeight: 1.2,
-              }}
-            >
-              BloomBig
-            </div>
-            <div style={{ fontSize: 10, color: 'var(--text-muted)', letterSpacing: '0.08em' }}>
-              STUDIO AI
-            </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div
+            style={{
+              width: 34,
+              height: 34,
+              borderRadius: 9,
+              background: 'linear-gradient(135deg, #0d9488, #14b8a6)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              boxShadow: '0 2px 8px rgba(13,148,136,0.25)',
+            }}
+          >
+            <Sparkles size={16} color="white" />
           </div>
+          {!collapsed && (
+            <div>
+              <div
+                style={{
+                  fontFamily: 'Space Grotesk, sans-serif',
+                  fontWeight: 700,
+                  fontSize: 14,
+                  color: '#0f172a',
+                  lineHeight: 1.2,
+                }}
+              >
+                BloomBig
+              </div>
+              <div style={{ fontSize: 10, color: '#94a3b8', letterSpacing: '0.08em', fontWeight: 500 }}>
+                STUDIO AI
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Mobile close */}
+        {!collapsed && mobileOpen !== undefined && (
+          <button
+            onClick={onMobileClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              color: '#94a3b8',
+              padding: 4,
+              display: 'flex',
+            }}
+            className="md:hidden"
+          >
+            <X size={16} />
+          </button>
         )}
       </div>
 
       {/* Navigation */}
-      <nav style={{ padding: '12px 10px', flex: 1, overflowY: 'auto' }}>
+      <nav style={{ padding: '10px 8px', flex: 1, overflowY: 'auto' }}>
+        {/* Section label */}
+        {!collapsed && (
+          <div style={{
+            fontSize: 10,
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            color: '#cbd5e1',
+            padding: '8px 8px 4px',
+          }}>
+            Navigation
+          </div>
+        )}
+
         {NAV_KEYS.map((item) => {
           const Icon = item.icon
           const label = t(item.key)
@@ -120,98 +153,60 @@ export default function Sidebar() {
           return (
             <button
               key={item.path}
-              onClick={() => navigate(item.path)}
+              onClick={() => handleNav(item.path)}
               className={`sidebar-nav-item ${isActive ? 'active' : ''}`}
-              title={sidebarCollapsed ? label : undefined}
+              title={collapsed ? label : undefined}
               style={{
-                justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
+                justifyContent: collapsed ? 'center' : 'flex-start',
                 marginBottom: 2,
               }}
             >
-              <Icon size={18} style={{ flexShrink: 0 }} />
-              {!sidebarCollapsed && <span style={{ fontSize: isTamil ? 12 : 14 }}>{label}</span>}
+              <div style={{ width: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Icon size={18} style={{ color: isActive ? '#0d9488' : undefined }} />
+              </div>
+              {!collapsed && <span>{label}</span>}
+              {isActive && !collapsed && (
+                <div style={{
+                  marginLeft: 'auto',
+                  width: 5,
+                  height: 5,
+                  borderRadius: '50%',
+                  background: '#14b8a6',
+                  flexShrink: 0,
+                }} />
+              )}
             </button>
           )
         })}
       </nav>
 
       {/* Footer */}
-      <div style={{ padding: '12px 10px', borderTop: '1px solid var(--border-subtle)' }}>
+      <div style={{ padding: '8px 8px 12px', borderTop: '1px solid #f1f5f9' }}>
 
-        {/* ─── Language Toggle ────────────────────────── */}
-        <button
-          onClick={toggleLanguage}
-          className="sidebar-nav-item"
-          title={sidebarCollapsed ? (isTamil ? 'Switch to English' : 'தமிழில் மாற்று') : undefined}
-          style={{
-            justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
-            marginBottom: 4,
-            background: 'rgba(27,50,117,0.10)',
-            border: '1px solid rgba(27,50,117,0.20)',
-            color: '#8E9FC0',
-          }}
-        >
-          <Languages size={16} />
-          {!sidebarCollapsed && (
-            <span style={{ fontSize: 12, fontWeight: 600 }}>
-              {isTamil ? 'English' : 'தமிழ்'}
-            </span>
-          )}
-        </button>
-
-        {/* ─── Theme Toggle ─────────────────────────────── */}
-        <button
-          onClick={toggleTheme}
-          className="sidebar-nav-item"
-          title={sidebarCollapsed ? (isLight ? 'Switch to Dark' : 'Switch to Light') : undefined}
-          style={{
-            justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
-            marginBottom: 4,
-            background: isLight ? 'rgba(13,155,118,0.07)' : 'rgba(188,154,0,0.08)',
-            border: `1px solid ${isLight ? 'rgba(13,155,118,0.15)' : 'rgba(188,154,0,0.18)'}`,
-            color: isLight ? 'var(--bloom-primary)' : '#E4BE34',
-          }}
-        >
-          {isLight ? <Moon size={16} /> : <Sun size={16} />}
-          {!sidebarCollapsed && (
-            <span style={{ fontSize: 13 }}>
-              {isLight ? t('nav.darkMode') : t('nav.lightMode')}
-            </span>
-          )}
-        </button>
-
-        <button
-          className="sidebar-nav-item"
-          style={{ justifyContent: sidebarCollapsed ? 'center' : 'flex-start', marginBottom: 4 }}
-          onClick={() => navigate('/settings')}
-          title={sidebarCollapsed ? t('nav.settings') : undefined}
-        >
-          <Settings size={16} />
-          {!sidebarCollapsed && <span style={{ fontSize: isTamil ? 12 : 14 }}>{t('nav.settings')}</span>}
-        </button>
-
-        {!sidebarCollapsed && user && (
+        {/* User info */}
+        {!collapsed && user && (
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: 10,
-              padding: '8px 10px',
-              marginBottom: 4,
+              padding: '10px 10px',
+              marginBottom: 6,
               borderRadius: 10,
-              background: 'var(--bg-card-hover)',
+              background: '#f8fafc',
+              border: '1px solid #f1f5f9',
             }}
           >
             <div
               style={{
-                width: 28,
-                height: 28,
+                width: 30,
+                height: 30,
                 borderRadius: '50%',
-                background: 'linear-gradient(135deg, #0D9B76, #D94515)',
+                background: 'linear-gradient(135deg, #0d9488, #0891b2)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 700,
                 color: 'white',
                 flexShrink: 0,
@@ -222,9 +217,9 @@ export default function Sidebar() {
             <div style={{ flex: 1, overflow: 'hidden' }}>
               <div
                 style={{
-                  fontSize: 12,
+                  fontSize: 13,
                   fontWeight: 600,
-                  color: 'var(--text-primary)',
+                  color: '#0f172a',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
@@ -232,22 +227,33 @@ export default function Sidebar() {
               >
                 {user.name || 'Demo User'}
               </div>
-              <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>BloomBig Studio</div>
+              <div style={{ fontSize: 11, color: '#94a3b8' }}>BloomBig Studio</div>
             </div>
           </div>
         )}
 
         <button
           className="sidebar-nav-item"
+          style={{ justifyContent: collapsed ? 'center' : 'flex-start', marginBottom: 2 }}
+          onClick={() => handleNav('/settings')}
+          title={collapsed ? t('nav.settings') : undefined}
+        >
+          <Settings size={16} />
+          {!collapsed && <span style={{ fontSize: 14 }}>{t('nav.settings')}</span>}
+        </button>
+
+        <button
+          className="sidebar-nav-item"
           style={{
-            color: 'var(--coral-400)',
-            justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
+            color: '#e11d48',
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            marginBottom: 2,
           }}
           onClick={handleLogout}
-          title={sidebarCollapsed ? t('nav.logout') : undefined}
+          title={collapsed ? t('nav.logout') : undefined}
         >
           <LogOut size={16} />
-          {!sidebarCollapsed && <span style={{ fontSize: isTamil ? 12 : 14 }}>{t('nav.logout')}</span>}
+          {!collapsed && <span style={{ fontSize: 14 }}>{t('nav.logout')}</span>}
         </button>
 
         {/* Collapse toggle */}
@@ -256,13 +262,12 @@ export default function Sidebar() {
           className="sidebar-nav-item"
           style={{
             marginTop: 4,
-            justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
-            fontSize: 12,
-            color: 'var(--text-muted)',
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            color: '#cbd5e1',
           }}
         >
-          {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-          {!sidebarCollapsed && <span style={{ fontSize: 12 }}>{t('nav.collapse')}</span>}
+          {collapsed ? <ChevronRight size={15} /> : <ChevronLeft size={15} />}
+          {!collapsed && <span style={{ fontSize: 12, color: '#94a3b8' }}>{t('nav.collapse')}</span>}
         </button>
       </div>
     </aside>

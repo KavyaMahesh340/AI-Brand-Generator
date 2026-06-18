@@ -1,8 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-import { useAuthStore, useThemeStore } from './store'
+import { useAuthStore } from './store'
 import Sidebar from './components/Sidebar'
+import { Menu } from 'lucide-react'
 
 // Pages
 import LoginPage from './pages/LoginPage'
@@ -21,11 +22,53 @@ import SettingsPage from './pages/SettingsPage'
 
 function ProtectedLayout({ children }) {
   const { isAuthenticated } = useAuthStore()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   if (!isAuthenticated) return <Navigate to="/login" replace />
+
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar />
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <Sidebar
+        mobileOpen={sidebarOpen}
+        onMobileClose={() => setSidebarOpen(false)}
+      />
+
       <main className="main-content" style={{ flex: 1 }}>
+        {/* Mobile header */}
+        <div className="mobile-header">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            style={{
+              background: 'none',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              padding: '8px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Menu size={18} color="#475569" />
+          </button>
+          <div style={{
+            fontFamily: 'Space Grotesk, sans-serif',
+            fontWeight: 700,
+            fontSize: 15,
+            color: '#0f172a',
+          }}>
+            BloomBig Studio
+          </div>
+          <div style={{ width: 34 }} />
+        </div>
+
         {children}
       </main>
     </div>
@@ -33,11 +76,10 @@ function ProtectedLayout({ children }) {
 }
 
 export default function App() {
-  const { applyTheme } = useThemeStore()
-
-  // Apply persisted theme on mount
+  // Force light theme on mount — no dark mode in this application
   useEffect(() => {
-    applyTheme()
+    document.documentElement.setAttribute('data-theme', 'light')
+    document.documentElement.classList.remove('dark')
   }, [])
 
   return (
@@ -46,15 +88,16 @@ export default function App() {
         position="top-right"
         toastOptions={{
           style: {
-            background: 'var(--bg-card)',
-            color: 'var(--text-primary)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: '12px',
+            background: '#ffffff',
+            color: '#0f172a',
+            border: '1px solid #e2e8f0',
+            borderRadius: '10px',
             fontFamily: 'Inter, sans-serif',
             fontSize: '14px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
           },
-          success: { iconTheme: { primary: '#10B981', secondary: 'white' } },
-          error: { iconTheme: { primary: '#EF4444', secondary: 'white' } },
+          success: { iconTheme: { primary: '#16a34a', secondary: 'white' } },
+          error: { iconTheme: { primary: '#e11d48', secondary: 'white' } },
         }}
       />
       <Routes>

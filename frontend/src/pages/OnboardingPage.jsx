@@ -112,7 +112,7 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', padding: '40px 36px', maxWidth: 800, margin: '0 auto' }}>
+    <div style={{ minHeight: '100vh', padding: '40px 24px', margin: '0 auto' }}>
       {/* Header */}
       <div style={{ marginBottom: 36, textAlign: 'center' }}>
         <span className="badge badge-purple" style={{ marginBottom: 12, display: 'inline-flex' }}>
@@ -183,7 +183,7 @@ export default function OnboardingPage() {
             <p style={{ color: 'var(--text-secondary)', marginBottom: 28, fontSize: 14 }}>
               {language === 'ta' ? 'அடிப்படை விவரங்களுடன் தொடங்குங்கள் — இடம், வகை மற்றும் அடையாளம்.' : 'Start with the fundamentals — location, category, and identity.'}
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
               <div>
                 <label className="input-label">{t('newCampaign.brand')} *</label>
                 <input className="input-field" placeholder="e.g. NatureBloom Co." value={form.brand_name}
@@ -224,7 +224,7 @@ export default function OnboardingPage() {
             </p>
             <div style={{ marginBottom: 24 }}>
               <label className="input-label">{language === 'ta' ? 'முதன்மை நோக்கம்' : 'Primary Goal'} *</label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {GOALS.map(g => (
                   <button
                     key={g.value}
@@ -249,7 +249,7 @@ export default function OnboardingPage() {
             </div>
             <div>
               <label className="input-label">{language === 'ta' ? 'வரவுசெலவுத் திட்டம்' : 'Budget Tier'} *</label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {BUDGET_TIERS.map(b => (
                   <button
                     key={b}
@@ -321,7 +321,7 @@ export default function OnboardingPage() {
             </div>
             <div>
               <label className="input-label">{t('brandDna.toneArchetype')} *</label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 10 }}>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                 {ARCHETYPES.map(a => (
                   <button
                     key={a.value}
@@ -413,7 +413,7 @@ export default function OnboardingPage() {
             {!dna && !extracting && (
               <>
                 <h2 style={{ fontSize: 20, marginBottom: 8 }}>{language === 'ta' ? 'டிஎன்ஏ பிரித்தெடுக்கத் தயார்' : 'Ready to Extract Brand DNA'}</h2>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: 28, fontSize: 14, maxWidth: 440, margin: '0 auto 28px' }}>
+                <p style={{ color: 'var(--text-secondary)', marginBottom: 28, fontSize: 14, margin: '0 auto 28px' }}>
                   {language === 'ta' ? 'பிராண்டின் 5 முக்கிய டிஎன்ஏ கூறுகளை AI கண்டறியும். இது உங்கள் எதிர்கால பிரச்சார உத்திகளில் பயன்படுத்தப்படும்.' : "The AI will analyse everything you've told us and extract your brand's 5 core DNA attributes. This fingerprint will be prepended to every strategy we generate."}
                 </p>
                 <button className="btn-primary" onClick={handleExtract} style={{ padding: '14px 32px' }}>
