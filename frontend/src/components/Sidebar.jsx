@@ -16,6 +16,7 @@ import {
   Target,
   Shield,
   X,
+  Languages,
 } from 'lucide-react'
 
 const NAV_KEYS = [
@@ -35,6 +36,7 @@ export default function Sidebar({ mobileOpen, onMobileClose }) {
   const navigate = useNavigate()
   const { sidebarCollapsed, toggleSidebar } = useAppStore()
   const { user, logout } = useAuthStore()
+  const { language, setLanguage } = useLanguageStore()
   const { t } = useTranslation()
 
   const handleLogout = () => {
@@ -98,7 +100,7 @@ export default function Sidebar({ mobileOpen, onMobileClose }) {
                   lineHeight: 1.2,
                 }}
               >
-                BloomBig
+                MarketMind
               </div>
               <div style={{ fontSize: 10, color: '#94a3b8', letterSpacing: '0.08em', fontWeight: 500 }}>
                 STUDIO AI
@@ -227,7 +229,7 @@ export default function Sidebar({ mobileOpen, onMobileClose }) {
               >
                 {user.name || 'Demo User'}
               </div>
-              <div style={{ fontSize: 11, color: '#94a3b8' }}>BloomBig Studio</div>
+              <div style={{ fontSize: 11, color: '#94a3b8' }}>MarketMind AI</div>
             </div>
           </div>
         )}
@@ -240,6 +242,16 @@ export default function Sidebar({ mobileOpen, onMobileClose }) {
         >
           <Settings size={16} />
           {!collapsed && <span style={{ fontSize: 14 }}>{t('nav.settings')}</span>}
+        </button>
+
+        <button
+          className="sidebar-nav-item"
+          style={{ justifyContent: collapsed ? 'center' : 'flex-start', marginBottom: 2 }}
+          onClick={() => setLanguage(language === 'en' ? 'ta' : 'en')}
+          title={collapsed ? (language === 'en' ? 'தமிழ்' : 'English') : undefined}
+        >
+          <Languages size={16} />
+          {!collapsed && <span style={{ fontSize: 14 }}>{language === 'en' ? 'தமிழ்' : 'English'}</span>}
         </button>
 
         <button

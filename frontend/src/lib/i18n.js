@@ -1,5 +1,5 @@
 /**
- * BloomBig Studio — i18n Translation System
+ * MarketMind AI — i18n Translation System
  * English (en) + Tamil (ta) — Full bilingual support
  */
 
@@ -25,7 +25,7 @@ export const translations = {
 
     // ─── Login ────────────────────────────────────────────────────
     login: {
-      title: 'BloomBig Studio',
+      title: 'MarketMind AI',
       subtitle: 'AI Campaign Strategy Generator',
       confidential: 'Confidential — Internship Programme',
       demoAccount: 'Demo Account',
@@ -38,7 +38,7 @@ export const translations = {
       createAccount: 'Create Account',
       authenticating: 'Signing in…',
       footer: 'Brands Built to Bloom · Internal Tool · Confidential',
-      emailPlaceholder: 'you@bloombig.studio',
+      emailPlaceholder: 'you@marketmind.ai',
       namePlaceholder: 'Your name',
     },
 
@@ -192,7 +192,7 @@ export const translations = {
       jtbd: 'Job To Be Done',
       platform: 'Platform Preference',
       jtbdMethodology: 'Jobs-to-be-Done Methodology',
-      jtbdNote: "Unlike standard demographic profiling, BloomBig's personas capture what the customer is trying to accomplish — the emotional, functional, and social progress they want to make.",
+      jtbdNote: "Unlike standard demographic profiling, MarketMind's personas capture what the customer is trying to accomplish — the emotional, functional, and social progress they want to make.",
     },
 
     // ─── Risk Radar ───────────────────────────────────────────────
@@ -273,7 +273,7 @@ export const translations = {
       testConnection: 'Test Connection',
       about: 'About',
       version: 'v1.0.0',
-      aboutNote: 'Confidential — BloomBig Studios Internship Programme',
+      aboutNote: 'Confidential — MarketMind AI Internship Programme',
       tagline: 'Brands Built to Bloom · Internal Distribution Only',
     },
 
@@ -350,7 +350,7 @@ export const translations = {
       createAccount: 'கணக்கு உருவாக்கு',
       authenticating: 'சரிபார்க்கிறது…',
       footer: 'பிராண்டுகள் மலரும் — உள்ளக கருவி — ரகசியமானது',
-      emailPlaceholder: 'நீங்கள்@bloombig.studio',
+      emailPlaceholder: 'நீங்கள்@marketmind.ai',
       namePlaceholder: 'உங்கள் பெயர்',
     },
 

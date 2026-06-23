@@ -1,5 +1,6 @@
 import { Check, Cpu, Database, Info, Settings, Sun } from 'lucide-react'
 import { useTranslation } from '../lib/useTranslation'
+import { useLanguageStore } from '../store'
 import toast from 'react-hot-toast'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
@@ -10,6 +11,7 @@ import { SettingsActions, SettingsCard, SettingsField } from '../components/sett
 
 export default function SettingsPage() {
   const { t } = useTranslation()
+  const { language } = useLanguageStore()
 
   return (
     <div className="page-wrapper">
@@ -86,7 +88,7 @@ export default function SettingsPage() {
               <Button
                 className="w-full sm:w-auto"
                 variant="secondary"
-                onClick={() => toast.success('Supabase config saved!')}
+                onClick={() => toast.success(language === 'ta' ? 'சுபாபேஸ் அமைப்பு சேமிக்கப்பட்டது!' : 'Supabase config saved!')}
               >
                 {t('settings.saveConnection')}
               </Button>
@@ -122,14 +124,14 @@ export default function SettingsPage() {
               <Button
                 className="w-full sm:w-auto"
                 variant="secondary"
-                onClick={() => toast.success('AI Engine config saved!')}
+                onClick={() => toast.success(language === 'ta' ? 'AI இயந்திர அமைப்பு சேமிக்கப்பட்டது!' : 'AI Engine config saved!')}
               >
                 {t('settings.save')}
               </Button>
               <Button
                 className="w-full sm:w-auto"
                 variant="outline"
-                onClick={() => toast.success('Mock Mode - AI engine is simulated')}
+                onClick={() => toast.success(language === 'ta' ? 'மாதிரி முறை — AI இயந்திரம் உருவகப்படுத்தப்பட்டுள்ளது' : 'Mock Mode - AI engine is simulated')}
               >
                 {t('settings.testConnection')}
               </Button>
@@ -144,14 +146,14 @@ export default function SettingsPage() {
         >
           <div className="space-y-4">
             <div className="space-y-1.5">
-              <div className="text-sm font-semibold text-gray-900">BloomBig Studio AI</div>
+              <div className="text-sm font-semibold text-gray-900">MarketMind AI AI</div>
               <p className="text-sm text-gray-600">{t('login.subtitle')}</p>
             </div>
 
             <Separator />
 
             <div className="space-y-1.5 text-xs leading-5 text-gray-500">
-              <p>Confidential - BloomBig Studios Internship Programme</p>
+              <p>Confidential - MarketMind AI Internship Programme</p>
               <p>Brands Built to Bloom - Internal Distribution Only</p>
             </div>
           </div>

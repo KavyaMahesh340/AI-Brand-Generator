@@ -42,7 +42,7 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(PORT, () => {
-  console.log(`\n🌺 BloomBig Studio API running on http://localhost:${PORT}`)
+  console.log(`\n🌺 MarketMind AI API running on http://localhost:${PORT}`)
   console.log(`   AI Engine: ${process.env.AI_ENGINE_URL || 'http://localhost:8001'} (mock mode)`)
   console.log(`   Supabase: ${process.env.SUPABASE_URL ? 'Connected' : 'Placeholder (set SUPABASE_URL in .env)'}\n`)
 })

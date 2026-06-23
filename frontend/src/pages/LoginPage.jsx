@@ -5,7 +5,7 @@ import { Sparkles, Mail, Lock, Eye, EyeOff, ArrowRight, Zap, ShieldCheck } from 
 import toast from 'react-hot-toast'
 import { useTranslation } from '../lib/useTranslation'
 
-const DEMO_EMAIL = 'demo@bloombig.studio'
+const DEMO_EMAIL = 'demo@marketmind.ai'
 const DEMO_PASSWORD = 'bloom2024'
 const DEMO_NAME = 'Demo Intern'
 
@@ -32,7 +32,7 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    doLogin(form.email, form.name || 'BloomBig Intern')
+    doLogin(form.email, form.name || 'MarketMind Intern')
   }
 
   const handleDemoLogin = () => {
@@ -78,7 +78,7 @@ export default function LoginPage() {
               <Sparkles size={20} color="white" />
             </div>
             <div>
-              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: 17, color: 'white' }}>BloomBig Studio</div>
+              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: 17, color: 'white' }}>MarketMind AI</div>
               <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.08em' }}>AI CAMPAIGN PLATFORM</div>
             </div>
           </div>
@@ -110,7 +110,7 @@ export default function LoginPage() {
           ))}
 
           <div style={{ marginTop: 32, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.15)', fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>
-            Confidential — BloomBig Studios Internship Programme
+            Confidential — MarketMind AI Internship Programme
           </div>
         </div>
       </div>

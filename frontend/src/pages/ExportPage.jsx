@@ -44,7 +44,7 @@ export default function ExportPage() {
       pdf.rect(0, 0, 210, 297, 'F')
       pdf.setTextColor(13, 148, 136)
       pdf.setFontSize(10)
-      pdf.text('BLOOMBIG STUDIO — AI CAMPAIGN STRATEGY', 105, 20, { align: 'center' })
+      pdf.text('MarketMind AI — AI CAMPAIGN STRATEGY', 105, 20, { align: 'center' })
       pdf.setTextColor(15, 23, 42)
       pdf.setFontSize(22)
       pdf.setFont('helvetica', 'bold')
@@ -155,9 +155,9 @@ export default function ExportPage() {
 
       pdf.setTextColor(148, 163, 184)
       pdf.setFontSize(8)
-      pdf.text('Confidential — BloomBig Studio Internship Programme — Brands Built to Bloom', 105, 290, { align: 'center' })
+      pdf.text('Confidential — MarketMind AI Internship Programme — Brands Built to Bloom', 105, 290, { align: 'center' })
 
-      pdf.save('BloomBig_Campaign_Strategy.pdf')
+      pdf.save('MarketMind_Campaign_Strategy.pdf')
       setDone(true)
       toast.success('8-page pitch deck exported!')
     } catch (err) {
@@ -255,7 +255,7 @@ export default function ExportPage() {
         <div style={{ marginTop: 14, padding: '12px 16px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
           <CheckCircle2 size={16} color="#16a34a" />
           <div style={{ fontSize: 13, color: '#15803d' }}>
-            <strong>BloomBig_Campaign_Strategy.pdf</strong> {t('export.savedMsg')}
+            <strong>MarketMind_Campaign_Strategy.pdf</strong> {t('export.savedMsg')}
           </div>
         </div>
       )}

@@ -125,9 +125,9 @@ What does your brand stand for beyond the product? ↓`,
 
 That's the shift. That's the whole thing.
 
-#BrandStory #MarketingInsights #BuildWithPurpose #ContentStrategy #BloomBig`,
+#BrandStory #MarketingInsights #BuildWithPurpose #ContentStrategy #MarketMind`,
     word_count: 52,
-    hashtags: ['#BrandStory', '#MarketingInsights', '#BuildWithPurpose', '#ContentStrategy', '#BloomBig'],
+    hashtags: ['#BrandStory', '#MarketingInsights', '#BuildWithPurpose', '#ContentStrategy', '#MarketMind'],
   },
   tiktok: {
     platform: 'TikTok',

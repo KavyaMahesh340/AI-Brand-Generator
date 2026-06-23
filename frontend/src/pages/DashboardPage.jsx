@@ -116,7 +116,7 @@ export default function DashboardPage() {
               <>Campaign <span className="gradient-text">Intelligence</span> Hub</>
             )}
           </h1>
-          <p className="page-subtitle">Brands Built to Bloom — BloomBig Studio AI</p>
+          <p className="page-subtitle">Brands Built to Bloom — MarketMind AI AI</p>
         </div>
         <Button id="new-campaign-btn" onClick={() => navigate('/campaigns/new')}>
           <Plus size={15} />

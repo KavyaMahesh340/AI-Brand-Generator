@@ -64,7 +64,7 @@ function ProtectedLayout({ children }) {
             fontSize: 15,
             color: '#0f172a',
           }}>
-            BloomBig Studio
+            MarketMind AI
           </div>
           <div style={{ width: 34 }} />
         </div>

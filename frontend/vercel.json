@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "bloombig-studio",
+  "name": "marketmind-ai",
   "builds": [
     {
       "src": "package.json",

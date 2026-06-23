@@ -169,19 +169,19 @@ export default function CampaignDetailPage() {
   return (
     <div style={{ padding: '32px 24px' }}>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
+      <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-7">
         <div>
           <button className="btn-ghost" style={{ marginBottom: 14, fontSize: 13 }} onClick={() => navigate('/campaigns')}>
             {t('detail.back')}
           </button>
           <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 4 }}>Pongal Harvest Launch</h1>
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <div className="flex flex-wrap gap-2 items-center">
             <span className="badge badge-green">NatureBloom Co.</span>
             <span className="badge badge-purple">{t('newCampaign.goals.awareness')}</span>
             <span className="badge badge-amber">{language === 'ta' ? 'ஜனவரி 2024' : 'Jan 2024'}</span>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <div className="flex gap-2 items-center w-full md:w-auto mt-4 md:mt-0">
           {/* CampaignIQ Score */}
           <div style={{ textAlign: 'center', padding: '12px 20px', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: 12 }}>
             <div style={{ fontSize: 11, color: '#34D399', fontWeight: 600, marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{t('detail.campaignIq')}</div>
@@ -234,11 +234,13 @@ export default function CampaignDetailPage() {
       {/* Audience Personas */}
       <SectionCard title={t('detail.personas')} icon={Users} badge={t('detail.personasCount')} t={t} language={language}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {personas.map(p => (
+          {personas.map(p => {
+            const initials = p.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
+            return (
             <div key={p.id} style={{ padding: '20px', borderRadius: 14, background: `${p.color}08`, border: `1px solid ${p.color}25` }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                <div style={{ width: 44, height: 44, borderRadius: '50%', background: `${p.color}20`, border: `2px solid ${p.color}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>
-                  {p.emoji}
+                <div style={{ width: 44, height: 44, borderRadius: '50%', background: `${p.color}20`, border: `2px solid ${p.color}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, color: p.color, fontFamily: 'Space Grotesk, sans-serif' }}>
+                  {initials}
                 </div>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: 14 }}>{p.name}</div>
@@ -265,7 +267,7 @@ export default function CampaignDetailPage() {
                 "{p.jobs_to_be_done}"
               </div>
             </div>
-          ))}
+          )})}
         </div>
       </SectionCard>
 

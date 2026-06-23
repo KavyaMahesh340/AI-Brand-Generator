@@ -20,7 +20,7 @@ function mockPipeline(campaign) {
     emotion_outcome: { target_emotion: 'Inspired + Urgent', content_format: 'Short-form video testimonials', platform_recommendation: 'Instagram Reels in Tamil' },
     platform_translation: {
       linkedin: { platform: 'LinkedIn', tone: 'Thought-leader', content: 'Most brands stop at the buy now moment. This changes that.' },
-      instagram: { platform: 'Instagram', tone: 'Visual story', content: 'The moment it clicked for me was when I stopped asking "is this good?" and started asking "who do I become?" ✨', hashtags: ['#BrandStory', '#BloomBig'] },
+      instagram: { platform: 'Instagram', tone: 'Visual story', content: 'The moment it clicked for me was when I stopped asking "is this good?" and started asking "who do I become?" ✨', hashtags: ['#BrandStory', '#MarketMind'] },
       tiktok: { platform: 'TikTok', tone: 'Hook-first', content: '"Stop selling the product. Start selling who they become." [7s hook]' },
       whatsapp: { platform: 'WhatsApp', tone: 'Conversational', content: 'Hey! Quick one — the response to our latest campaign has blown us away 🙌 Reply "SHOW ME" to see the top 3 posts.' },
     },
